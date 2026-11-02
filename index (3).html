@@ -1,0 +1,393 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Personaliza tu programa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: one centered column, one section per step, brand-dark ground with a single cyan signal */
+:root{
+  --void:#0A0D12; --midnight:#12171F; --graphite:#2A323C; --glass:#8C9BA6; --mist:#C9D4DB;
+  --cloud:#F1F5F8; --cyan:#22D3EE; --teal:#0E7490; --ink:#FFFFFF;
+  --font:'Poppins', Arial, sans-serif;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--void);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:32px 64px;display:flex;flex-direction:column;gap:28px;position:relative}
+.orbits{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.orbits svg{position:absolute;right:-220px;top:-180px;width:720px;height:720px;opacity:.5}
+.wrap > *{position:relative;z-index:1}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-size:17px;letter-spacing:-.01em}
+.logo b{font-weight:700}.logo span{font-weight:300}
+.tag{font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--glass);text-transform:uppercase}
+.eyebrow{font-size:12px;font-weight:500;letter-spacing:.14em;color:var(--cyan);text-transform:uppercase}
+h1{margin:0;font-size:clamp(28px,6vw,40px);line-height:1.12;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:normal;font-weight:300;color:var(--cyan)}
+.lead{margin:0;font-size:16px;font-weight:300;color:var(--mist);max-width:60ch}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.fact{background:var(--midnight);border:1px solid var(--graphite);border-radius:12px;padding:14px}
+.fact strong{display:block;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.fact span{font-size:12px;color:var(--glass);line-height:1.4;display:block}
+.fact:first-child strong{color:var(--cyan)}
+@media (max-width:520px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.progress{display:flex;flex-direction:column;gap:8px}
+.progress-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12px;color:var(--glass)}
+.progress-top b{color:var(--ink);font-weight:500}
+.bar{height:4px;border-radius:4px;background:var(--graphite);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(135deg,var(--teal),var(--cyan));border-radius:4px;transition:width .3s ease}
+
+.card{background:var(--midnight);border:1px solid var(--graphite);border-radius:16px;padding:clamp(20px,4vw,32px);display:flex;flex-direction:column;gap:26px}
+.step-head{display:flex;flex-direction:column;gap:6px}
+.step-head h2{margin:0;font-size:22px;font-weight:700;line-height:1.25;text-wrap:balance}
+.step-head p{margin:0;color:var(--glass);font-size:14px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;min-width:0}
+legend{padding:0;font-size:15px;font-weight:500;line-height:1.45;margin-bottom:12px}
+legend small,.hint{display:block;font-weight:400;font-size:13px;color:var(--glass);margin-top:2px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt label{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid var(--graphite);border-radius:999px;font-size:14px;cursor:pointer;color:var(--mist);background:transparent;transition:border-color .15s, background .15s, color .15s;user-select:none}
+.opt label:hover{border-color:var(--glass);color:var(--ink)}
+.opt input:checked + label{border-color:var(--cyan);background:rgba(34,211,238,.10);color:var(--ink)}
+.opt input:checked + label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cyan)}
+.opt input:focus-visible + label{outline:2px solid var(--cyan);outline-offset:2px}
+.opt input:disabled + label{opacity:.4;cursor:not-allowed}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-size:15px;font-weight:500}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--void);border:1px solid var(--graphite);border-radius:10px;padding:12px 14px;min-height:46px}
+textarea{min-height:110px;resize:vertical}
+input[type=text]:focus,textarea:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
+::placeholder{color:#6B7783}
+.consent{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--mist);cursor:pointer}
+.consent input{width:22px;height:22px;margin-top:2px;accent-color:var(--cyan);flex:none}
+.error{margin:0;font-size:13px;color:#FCA5A5}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+button,.btn{font:inherit;font-size:15px;font-weight:600;border-radius:999px;min-height:48px;padding:12px 24px;cursor:pointer;border:1px solid transparent;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.primary{background:var(--cyan);color:var(--void)}
+.primary:hover{background:#5EE3F5}
+.ghost{background:transparent;color:var(--mist);border-color:var(--graphite)}
+.ghost:hover{border-color:var(--glass);color:var(--ink)}
+button:focus-visible,.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.covered{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.covered div{border-top:1px solid var(--graphite);padding-top:10px;font-size:13px;color:var(--glass);line-height:1.5}
+.covered b{display:block;color:var(--ink);font-weight:500;font-size:14px}
+@media (max-width:520px){.covered{grid-template-columns:1fr}}
+.done{display:flex;flex-direction:column;gap:18px}
+.summary{white-space:pre-wrap;font-size:13px;line-height:1.6;background:var(--void);border:1px solid var(--graphite);border-radius:12px;padding:16px;color:var(--mist);max-height:320px;overflow:auto;font-family:var(--font)}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.status{font-size:13px;color:var(--cyan);min-height:20px;margin:0}
+footer{font-size:12px;color:var(--glass);line-height:1.6;border-top:1px solid var(--graphite);padding-top:16px}
+footer b{color:var(--ink);font-weight:700}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="orbits" aria-hidden="true">
+  <svg viewBox="-400 -400 800 800" fill="none">
+    <circle r="380" stroke="#22D3EE" stroke-opacity=".10"/>
+    <ellipse rx="370" ry="210" transform="rotate(-43)" stroke="#22D3EE" stroke-opacity=".14"/>
+    <ellipse rx="370" ry="210" transform="rotate(41)" stroke="#8C9BA6" stroke-opacity=".12"/>
+    <circle r="250" stroke="#8C9BA6" stroke-opacity=".08"/>
+  </svg>
+</div>
+
+<main class="wrap">
+  <div class="brand">
+    <div class="logo">
+      <svg width="34" height="34" viewBox="-100 -100 200 200" role="img" aria-label="Isotipo de Omni Logic">
+        <circle r="92" fill="none" stroke="#8C9BA6" stroke-opacity=".6" stroke-width="5"/>
+        <ellipse rx="90" ry="52" transform="rotate(41)" fill="none" stroke="#C9D4DB" stroke-opacity=".5" stroke-width="12"/>
+        <ellipse rx="90" ry="52" transform="rotate(-43)" fill="none" stroke="#C9D4DB" stroke-opacity=".5" stroke-width="12"/>
+        <ellipse rx="90" ry="52" transform="rotate(-43)" fill="none" stroke="#22D3EE" stroke-width="5"/>
+        <circle r="28" fill="#0E7490"/><circle r="13" fill="#22D3EE"/>
+        <circle cx="65.8" cy="-61.4" r="9" fill="#E6ECF0"/><circle cx="-65.8" cy="61.4" r="9" fill="#E6ECF0"/><circle cx="67.9" cy="59" r="9" fill="#E6ECF0"/>
+      </svg>
+      <div><b>Omni</b><span> Logic</span></div>
+    </div>
+    <span class="tag">University</span>
+  </div>
+
+  <header style="display:flex;flex-direction:column;gap:16px" id="intro">
+    <span class="eyebrow">Programa ejecutivo · Claude aplicado a seguros</span>
+    <h1>Tu programa ya está listo. <em>Ahora lo hacemos tuyo.</em></h1>
+    <p class="lead">El temario de 8 sesiones ya cubre herramientas de IA, prospección, entregables con tu marca y medición de resultados. Con tus respuestas ajustamos los casos, los ejemplos y el calendario a tu forma de trabajar. Te toma 5 minutos.</p>
+    <div class="facts">
+      <div class="fact"><strong>16 h</strong><span>en vivo</span></div>
+      <div class="fact"><strong>8</strong><span>sesiones de 2 h</span></div>
+      <div class="fact"><strong>5</strong><span>personas por grupo</span></div>
+      <div class="fact"><strong>1</strong><span>caso real tuyo</span></div>
+    </div>
+  </header>
+
+  <div class="progress" aria-live="polite">
+    <div class="progress-top"><span id="stepLabel"><b>Paso 1 de 5</b> · Sobre ti</span><span id="stepPct">0%</span></div>
+    <div class="bar"><i id="barFill"></i></div>
+  </div>
+
+  <form id="form" class="card" novalidate>
+    <!-- Paso 1 -->
+    <section data-step="1" data-name="Sobre ti">
+      <div class="step-head"><h2>Sobre ti</h2><p>Para que los ejemplos hablen de tu ramo y de tu rol.</p></div>
+      <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px">
+        <div class="field">
+          <label for="nombre">Tu nombre</label>
+          <input type="text" id="nombre" name="nombre" autocomplete="name" placeholder="Nombre y apellido">
+        </div>
+        <fieldset data-key="rol" data-label="Rol" data-type="radio">
+          <legend>¿Cuál es tu rol?</legend>
+          <div class="opts"></div>
+        </fieldset>
+        <fieldset data-key="ramos" data-label="Ramos" data-type="checkbox">
+          <legend>¿Qué ramos trabajas?<small>Elige todos los que apliquen.</small></legend>
+          <div class="opts"></div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Paso 2 -->
+    <section data-step="2" data-name="Tu semana" hidden>
+      <div class="step-head"><h2>Tu semana</h2><p>De aquí sale tu caso práctico: lo que más tiempo te quita.</p></div>
+      <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px">
+        <fieldset data-key="tareas" data-label="Tareas que más tiempo quitan" data-type="checkbox" data-max="3">
+          <legend>¿Qué tareas te quitan más tiempo?<small>Elige hasta 3.</small></legend>
+          <div class="opts"></div>
+        </fieldset>
+        <fieldset data-key="horas" data-label="Horas por semana en la tarea principal" data-type="radio">
+          <legend>¿Cuántas horas a la semana le dedicas a la que más tiempo te quita?</legend>
+          <div class="opts"></div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Paso 3 -->
+    <section data-step="3" data-name="Tus herramientas" hidden>
+      <div class="step-head"><h2>Tus herramientas</h2><p>Con esto armamos el mapa de qué IA usar para cada tarea.</p></div>
+      <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px">
+        <fieldset data-key="herramientas" data-label="Herramientas de IA que usa" data-type="checkbox">
+          <legend>¿Qué herramientas de IA usas hoy?<small>Elige todas las que apliquen.</small></legend>
+          <div class="opts"></div>
+        </fieldset>
+        <fieldset data-key="criterio" data-label="Cómo elige la herramienta" data-type="radio">
+          <legend>¿Cómo eliges cuál usar para cada tarea?</legend>
+          <div class="opts"></div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Paso 4 -->
+    <section data-step="4" data-name="Tus prospectos" hidden>
+      <div class="step-head"><h2>Tus prospectos</h2><p>Para que los casos de contenido y seguimiento partan de tu realidad.</p></div>
+      <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px">
+        <fieldset data-key="origen" data-label="De dónde llegaron sus prospectos" data-type="checkbox">
+          <legend>¿De dónde llegaron tus prospectos el último mes?<small>Elige todos los que apliquen.</small></legend>
+          <div class="opts"></div>
+        </fieldset>
+        <fieldset data-key="marketing" data-label="Prioridad de marketing" data-type="radio">
+          <legend>En marketing, ¿qué te gustaría lograr primero?</legend>
+          <div class="opts"></div>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Paso 5 -->
+    <section data-step="5" data-name="Lo que esperas" hidden>
+      <div class="step-head"><h2>Lo que esperas del programa</h2><p>Todo esto ya está en el temario. Tu elección nos dice dónde poner más tiempo.</p></div>
+      <div style="display:flex;flex-direction:column;gap:24px;margin-top:20px">
+        <fieldset data-key="resultados" data-label="Quiere salir con" data-type="checkbox" data-max="3">
+          <legend>Al terminar, quiero salir con…<small>Elige hasta 3.</small></legend>
+          <div class="opts"></div>
+        </fieldset>
+        <div class="field">
+          <label for="caso">¿Qué proceso tuyo te gustaría resolver como caso práctico?</label>
+          <span class="hint">Piensa en algo que se repite cada semana.</span>
+          <textarea id="caso" name="caso" placeholder="Ej.: dar seguimiento a los prospectos que llegan por WhatsApp y no se me escape ninguno"></textarea>
+        </div>
+        <fieldset data-key="horario" data-label="Horario preferido" data-type="radio">
+          <legend>¿En qué horario te acomoda más tomar las sesiones?</legend>
+          <div class="opts"></div>
+        </fieldset>
+        <div class="covered" aria-label="Dónde está cada tema en el programa">
+          <div><b>Qué IA usar para cada tarea</b>Sesiones 01 y 02</div>
+          <div><b>Contenido y prospectos</b>Sesiones 04 y 05</div>
+          <div><b>Cotizar y dar seguimiento</b>Sesiones 03 y 06</div>
+          <div><b>Resultados medidos</b>Sesión 08</div>
+        </div>
+        <label class="consent" for="consent">
+          <input type="checkbox" id="consent" name="consent">
+          <span>Acepto que Omni Logic use mis respuestas para personalizar el programa y para contactarme sobre él. Mis datos no se comparten con terceros.</span>
+        </label>
+      </div>
+    </section>
+
+    <p class="error" id="error" role="alert" hidden></p>
+
+    <div class="nav">
+      <button type="button" class="ghost" id="back" hidden>Atrás</button>
+      <span></span>
+      <button type="button" class="primary" id="next">Siguiente</button>
+    </div>
+  </form>
+
+  <section class="card done" id="done" hidden aria-live="polite">
+    <div class="step-head">
+      <span class="eyebrow" id="doneEyebrow">Enviando</span>
+      <h2 id="thanks">Estamos guardando tus respuestas…</h2>
+      <p id="doneMsg">Esto toma solo un momento.</p>
+    </div>
+    <div class="summary" id="summary" tabindex="0"></div>
+    <div class="actions">
+      <button type="button" class="primary" id="retry" hidden>Reintentar envío</button>
+    </div>
+  </section>
+
+  <footer><b>Omni</b> Logic · La inteligencia que conecta tu negocio. Usamos tus respuestas solo para preparar tu programa.</footer>
+</main>
+
+<script>
+(function(){
+  var OPTIONS = {
+    rol: ["Agente", "Asistente o ejecutivo de cuenta", "Coordinador o promotor", "Dirección"],
+    ramos: ["Vida", "Gastos médicos", "Autos", "Daños", "Empresarial o colectivos", "Otro"],
+    tareas: ["Cotizar y armar comparativos", "Seguimiento a prospectos", "Renovaciones y cobranza", "Atención por WhatsApp", "Contenido para redes", "Reportes para la promotoría o la aseguradora"],
+    horas: ["Menos de 2", "2 a 5", "5 a 10", "Más de 10"],
+    herramientas: ["ChatGPT", "Claude", "Gemini", "Copilot", "Meta AI en WhatsApp", "Otra", "Ninguna"],
+    criterio: ["Uso siempre la misma", "Pruebo varias hasta que una funciona", "Me gustaría tener un criterio claro", "Todavía no uso IA"],
+    origen: ["Referidos", "Redes sociales", "La aseguradora o la promotoría", "Mi base de clientes", "Eventos", "Otro"],
+    marketing: ["Más prospectos", "Contenido constante para redes", "Posicionarme como experto en mi ramo", "Responder más rápido", "Recuperar clientes inactivos"],
+    resultados: ["Un mapa de qué IA usar para cada tarea", "Contenido para redes con mi marca", "Seguimiento a prospectos ordenado", "Comparativos y propuestas en minutos", "Cartera y renovaciones bajo control", "Un caso medido para mostrar a dirección"],
+    horario: ["Mañana", "Mediodía", "Tarde", "Noche"]
+  };
+
+  var form = document.getElementById('form');
+  var steps = Array.prototype.slice.call(form.querySelectorAll('section[data-step]'));
+  var current = 0;
+  var errorEl = document.getElementById('error');
+
+  // Build option chips
+  form.querySelectorAll('fieldset[data-key]').forEach(function(fs){
+    var key = fs.dataset.key, type = fs.dataset.type, box = fs.querySelector('.opts');
+    OPTIONS[key].forEach(function(text, i){
+      var id = key + '-' + i;
+      var wrap = document.createElement('div'); wrap.className = 'opt';
+      var input = document.createElement('input');
+      input.type = type; input.name = key; input.id = id; input.value = text;
+      var label = document.createElement('label'); label.htmlFor = id; label.textContent = text;
+      wrap.appendChild(input); wrap.appendChild(label); box.appendChild(wrap);
+    });
+    if (fs.dataset.max) {
+      var max = +fs.dataset.max;
+      fs.addEventListener('change', function(){
+        var boxes = fs.querySelectorAll('input');
+        var n = fs.querySelectorAll('input:checked').length;
+        boxes.forEach(function(b){ b.disabled = !b.checked && n >= max; });
+      });
+    }
+  });
+
+  function values(key){
+    return Array.prototype.map.call(form.querySelectorAll('input[name="' + key + '"]:checked'), function(i){ return i.value; });
+  }
+
+  function show(i){
+    steps.forEach(function(s, k){ s.hidden = k !== i; });
+    current = i;
+    document.getElementById('back').hidden = i === 0;
+    document.getElementById('next').textContent = i === steps.length - 1 ? 'Terminar' : 'Siguiente';
+    document.getElementById('stepLabel').innerHTML = '';
+    var b = document.createElement('b'); b.textContent = 'Paso ' + (i + 1) + ' de ' + steps.length;
+    document.getElementById('stepLabel').appendChild(b);
+    document.getElementById('stepLabel').appendChild(document.createTextNode(' · ' + steps[i].dataset.name));
+    var pct = Math.round(i / steps.length * 100);
+    document.getElementById('stepPct').textContent = pct + '%';
+    document.getElementById('barFill').style.width = pct + '%';
+    errorEl.hidden = true;
+  }
+
+  function validate(i){
+    if (i === 0) {
+      if (!document.getElementById('nombre').value.trim()) return 'Escribe tu nombre para continuar.';
+      if (!values('rol').length) return 'Elige tu rol para continuar.';
+    }
+    if (i === steps.length - 1 && !document.getElementById('consent').checked) {
+      return 'Para terminar, marca la casilla de consentimiento.';
+    }
+    return '';
+  }
+
+  function summaryText(){
+    var lines = ['Cuestionario Omni Logic · Programa de IA para seguros', ''];
+    lines.push('Nombre: ' + document.getElementById('nombre').value.trim());
+    form.querySelectorAll('fieldset[data-key]').forEach(function(fs){
+      var v = values(fs.dataset.key);
+      lines.push(fs.dataset.label + ': ' + (v.length ? v.join(', ') : 'Sin respuesta'));
+    });
+    var caso = document.getElementById('caso').value.trim();
+    lines.push('Caso práctico que quiere resolver: ' + (caso || 'Sin respuesta'));
+    lines.push('Consentimiento: Sí');
+    return lines.join('\n');
+  }
+
+  var URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbzYnibEifLNvETar4nOO1hUzhM2P2k4kYPhdyAqxV2O_fo3U81G8BGQoU7zAt8MVAqB/exec';
+
+  function payload(){
+    var p = new URLSearchParams();
+    p.append('Nombre', document.getElementById('nombre').value.trim());
+    form.querySelectorAll('fieldset[data-key]').forEach(function(fs){
+      p.append(fs.dataset.label, values(fs.dataset.key).join(', '));
+    });
+    p.append('Caso práctico', document.getElementById('caso').value.trim());
+    p.append('Consentimiento', 'Sí');
+    return p;
+  }
+
+  function setDone(eyebrow, title, msg){
+    document.getElementById('doneEyebrow').textContent = eyebrow;
+    document.getElementById('thanks').textContent = title;
+    document.getElementById('doneMsg').textContent = msg;
+  }
+
+  function send(){
+    var retry = document.getElementById('retry');
+    retry.hidden = true;
+    setDone('Enviando', 'Estamos guardando tus respuestas…', 'Esto toma solo un momento.');
+    fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: payload() })
+      .then(function(){
+        var first = document.getElementById('nombre').value.trim().split(/\s+/)[0];
+        setDone('Listo', 'Gracias, ' + first + '. Recibimos tus respuestas.',
+          'Con esto personalizamos tu programa. Al cerrar la encuesta compartimos el resumen de lo que respondieron los participantes.');
+      })
+      .catch(function(){
+        setDone('Sin conexión', 'No pudimos enviar tus respuestas.',
+          'Revisa tu conexión a internet y vuelve a intentarlo. Tus respuestas siguen aquí.');
+        retry.hidden = false;
+      });
+  }
+
+  function finish(){
+    document.getElementById('summary').textContent = summaryText();
+    form.hidden = true;
+    document.getElementById('done').hidden = false;
+    document.getElementById('stepLabel').innerHTML = '<b>Completado</b>';
+    document.getElementById('stepPct').textContent = '100%';
+    document.getElementById('barFill').style.width = '100%';
+    document.getElementById('done').scrollIntoView({behavior: 'smooth', block: 'start'});
+    send();
+  }
+
+  document.getElementById('next').addEventListener('click', function(){
+    var err = validate(current);
+    if (err) { errorEl.textContent = err; errorEl.hidden = false; return; }
+    if (current < steps.length - 1) { show(current + 1); form.scrollIntoView({block: 'start'}); }
+    else finish();
+  });
+  document.getElementById('back').addEventListener('click', function(){ show(Math.max(0, current - 1)); });
+  form.addEventListener('submit', function(e){ e.preventDefault(); });
+  document.getElementById('retry').addEventListener('click', send);
+
+  show(0);
+})();
+</script>
+
+</body></html>
